@@ -4,6 +4,7 @@
 #include "Ws2bth.h"
 
 using namespace std;
+
 typedef struct {
      char bthDevName[256];
      BTH_ADDR bthAddr;
@@ -76,6 +77,7 @@ int main(){
              }
          }
      }
+     
      releaseMemory(bthDev);
      WSALookupServiceEnd(hLookup);
      releaseMemory(lpqsRestrictions);
@@ -83,4 +85,3 @@ int main(){
      system("PAUSE");
      return 0;
 }
-//----------------------------------------------------
