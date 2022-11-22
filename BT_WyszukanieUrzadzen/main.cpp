@@ -1,11 +1,13 @@
 #include <iostream>
 #include <assert.h>
 #pragma option push -a1
- #include <winsock2.h>
- #include "Ws2bth.h"
+#include <winsock2.h>
+#include "Ws2bth.h"
 #pragma option pop
 #pragma comment(lib, "ws2_32.lib")
 using namespace std;
+
+
 template <class T>
 inline void releaseMemory(T &x)
 {
@@ -13,7 +15,8 @@ inline void releaseMemory(T &x)
      delete x;
      x = NULL;
 }
-//----------------------------------------------------
+
+
 void showError(){
      LPVOID lpMsgBuf;
      FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, NULL, WSAGetLastError(), 0, (LPTSTR)&lpMsgBuf, 0, NULL );
@@ -21,13 +24,13 @@ void showError(){
      free(lpMsgBuf);
      cin.get();
 }
-//----------------------------------------------------
+
 int main(){
     WORD wVersionRequested;
     WSADATA wsaData;
     wVersionRequested = MAKEWORD(2,2);
 
-    if(WSAStartup(wVersionRequested, &wsaData) != 0){//Ustalamy wersje biblioteki jak ma byæ odwzorowana dla naszego procesu
+    if(WSAStartup(wVersionRequested, &wsaData) != 0){//Ustalamy wersje biblioteki jak ma byÃ¦ odwzorowana dla naszego procesu
         showError();
     }
 
@@ -39,14 +42,15 @@ int main(){
     dwControlFlags |= LUP_FLUSHCACHE | LUP_RETURN_NAME | LUP_RETURN_ADDR;
     HANDLE hLookup;
 
-    if(SOCKET_ERROR == WSALookupServiceBegin(lpqsRestrictions, dwControlFlags, &hLookup)){//Rozpoczyna proces wykrywania urz¹dzeñ
+    if(SOCKET_ERROR == WSALookupServiceBegin(lpqsRestrictions, dwControlFlags, &hLookup)){//Rozpoczyna proces wykrywania urzadzeÃ±
         WSACleanup();
         return 0;
     }
 
     BOOL searchResult = FALSE;
+
     while(!searchResult){
-        if(NO_ERROR == WSALookupServiceNext(hLookup, dwControlFlags, &lpqsRestrictions->dwSize, lpqsRestrictions)){//Uzyskanie informacji o urz¹dzeniu
+        if(NO_ERROR == WSALookupServiceNext(hLookup, dwControlFlags, &lpqsRestrictions->dwSize, lpqsRestrictions)){//Uzyskanie informacji o urzadzeniu
             char buffer[40] = {0};
             DWORD bufLength = sizeof(buffer);
             WSAAddressToString(lpqsRestrictions->lpcsaBuffer->RemoteAddr.lpSockaddr, sizeof(SOCKADDR_BTH), NULL, buffer, &bufLength);//Zmiana adresu na stringa
@@ -66,10 +70,10 @@ int main(){
             }
         }
     }
+
     WSALookupServiceEnd(hLookup);
     releaseMemory(lpqsRestrictions);
     WSACleanup();
     system("PAUSE");
     return 0;
 }
-//----------------------------------------------------
