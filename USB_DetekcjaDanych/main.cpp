@@ -12,6 +12,7 @@ inline void releaseMemory(T &x){
     delete [] x;
     x = NULL;
 }
+
 GUID classGuid;
 HMODULE hHidLib;
 DWORD memberIndex = 0;
@@ -43,6 +44,7 @@ PBYTE getRegistryPropertyString(HDEVINFO deviceSet, PSP_DEVINFO_DATA deviceData,
 int main(){
     void (__stdcall *HidD_GetHidGuid)(OUT LPGUID HidGuid);
     bool (__stdcall *HidD_GetNumInputBuffers)(IN HANDLE HidDeviceObject, OUT PULONG NumberBuffers);
+
     hHidLib = LoadLibrary("C:\\Windows\\system32\\HID.DLL");
     if (!hHidLib) {
         cout << "Blad dolaczenia biblioteki HID.DLL." << endl;
@@ -64,6 +66,7 @@ int main(){
         cout << "Nie zidentyfikowano podlaczonych urzadzeñ." << endl;
         return 0;
     }
+
     deviceInterfaceData.cbSize = sizeof(SP_DEVICE_INTERFACE_DATA);
 
     cout << "--------------------------------------------LISTA DOSTEPNYCH URZADZEN--------------------------------------------" << endl;
@@ -131,6 +134,7 @@ int main(){
         cout << "Nie znaleziono urzadzenia o podanym VID" << endl;
         return 0;
     }
+
     SetupDiDestroyDeviceInfoList(deviceInfoSet);
     ULONG numberBuffers;
     HidD_GetNumInputBuffers(hidDeviceObject, &numberBuffers);
@@ -149,4 +153,3 @@ int main(){
     system("PAUSE");
     return 0;
 }
-//---------------------------------------------------------
